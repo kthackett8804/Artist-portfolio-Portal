@@ -8,21 +8,41 @@ function Portfolio() {
     medium: "",
     style: "",
     creationDate: "",
-    galleries: "",
+    galleries: [],
   });
+
+  const galleryOptions = [
+    "Modern Arts Gallery",
+    "Studio One Exhibition Hall",
+    "Open Canvas Collective",
+  ];
 
   const [imageFile, setImageFile] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
 
-  const handleChange = (event) => {
-    const fieldName = event.target.name;
-    const fieldValue = event.target.value;
+ const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
 
-    setForm({
-      ...form,
-      [fieldName]: fieldValue,
-    });
-};
+    if (name === "galleries") {
+      let updatedGalleries = [...form.galleries];
+      if (checked) {
+        updatedGalleries.push(value);
+      } else {
+        updatedGalleries = updatedGalleries.filter((g) => g !== value);
+      }
+      setForm({
+        ...form,
+        galleries: updatedGalleries,
+      });
+    } else {
+      setForm({
+        ...form,
+        [name]: value,
+      });
+    }
+  };
+
+ 
 
 const handleImageUpload = (event) => {
   const uploadedFile = event.target.files[0];
@@ -101,19 +121,22 @@ const handleImageUpload = (event) => {
             />
           </label>
 
-          <label>
-            Galleries to submit portfolio to: 
-            <select
-              name="galleries"
-              value={form.galleries}
-              onChange={handleChange}
-            >
-              <option value="">Select a gallery...</option>
-              <option value="Modern Arts Gallery">Modern Arts Gallery</option>
-              <option value="Studio One Exhibition Hall">Studio One Exhibition Hall</option>
-              <option value="Open Canvas Collective">Open Canvas Collective</option>
-            </select>
-          </label>
+          
+         <div>
+          Galleries to submit portfolio to:
+          {galleryOptions.map((gallery) => (
+            <label key={gallery}>
+              <input
+                type="checkbox"
+                name="galleries"
+                value={gallery}
+                checked={form.galleries.includes(gallery)}
+                onChange={handleChange}
+              />
+              {gallery}
+            </label>
+          ))}
+        </div>
 
           <button className="mainDesignBtn">Resize portfolio?</button>
         </div>

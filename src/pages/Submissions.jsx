@@ -12,7 +12,7 @@ function Submissions() {
     { id: 6, title: "image 6", name: "name" },
     { id: 7, title: "image 7", name: "name" },
     { id: 8, title: "image 8", name: "name" },
-  ]
+  ];
 
   const [searchTerm, setSearchTerm] = useState("");
 

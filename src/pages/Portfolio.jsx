@@ -5,10 +5,10 @@ function Portfolio() {
   const [form, setForm] = useState({
     pieceName: "",
     artistName: "",
-    medium: "",
+    artMedium: "",
     style: "",
     creationDate: "",
-    galleries: [],
+    GalleriesToSubmit: [],
   });
 
   const galleryOptions = [
@@ -35,7 +35,7 @@ function Portfolio() {
 
     if (name === "galleries") {
 
-      let updatedGalleries = [...form.galleries];
+      let updatedGalleries = [...form.GalleriesToSubmit];
       const selectedGallery = galleryOptions.find((g) => g.name === value);
 
      if (checked) {
@@ -50,7 +50,7 @@ function Portfolio() {
 
       setForm({
         ...form,
-        galleries: updatedGalleries,
+        GalleriesToSubmit: updatedGalleries,
       });
     } else {
       setForm({
@@ -121,7 +121,7 @@ const handleImageUpload = (event) => {
             <input 
               type="text" 
               name="medium" 
-              value={form.medium} 
+              value={form.artMedium} 
               onChange={handleChange} 
             />
           </label>
@@ -155,7 +155,7 @@ const handleImageUpload = (event) => {
                 type="checkbox"
                 name="galleries"
                 value={gallery.name}
-                checked={form.galleries.some((g) => g.name === gallery.name)}
+                checked={form.GalleriesToSubmit.some((g) => g.name === gallery.name)}
                 onChange={handleChange}
               />
               {gallery.name}

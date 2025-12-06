@@ -70,6 +70,13 @@ const handleImageUpload = (event) => {
     setPreviewURL(URL.createObjectURL(uploadedFile));
   }};
 
+  const handleSubmit = async () => {
+  const data = new FormData();
+  data.append("portfolio", JSON.stringify(form));
+  data.append("file", imageFile);
+
+};
+
   return (
     <div className="pagePadding">
 
@@ -168,7 +175,7 @@ const handleImageUpload = (event) => {
 
 
       <div className="buttonRow">
-        <button className="mainDesignBtn">Upload</button>
+        <button className="mainDesignBtn" onClick={handleSubmit}>Upload</button>
         <button className="mainDesignBtn">Edit</button>
         <button className="mainDesignBtn">Delete</button>
       </div>

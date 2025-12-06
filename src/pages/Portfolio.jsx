@@ -24,13 +24,30 @@ function Portfolio() {
  const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
 
+    //prev code didnt handle gallery as object
+    // if (name === "galleries") {
+    //   let updatedGalleries = [...form.galleries];
+    //   if (checked) {
+    //     updatedGalleries.push(value);
+    //   } else {
+    //     updatedGalleries = updatedGalleries.filter((g) => g !== value);
+    //   }
+
     if (name === "galleries") {
+
       let updatedGalleries = [...form.galleries];
-      if (checked) {
-        updatedGalleries.push(value);
+      const selectedGallery = galleryOptions.find((g) => g.name === value);
+
+     if (checked) {
+        // Add the object if not already included
+        if (!updatedGalleries.some((g) => g.name === value)) {
+          updatedGalleries.push(selectedGallery);
+        }
       } else {
-        updatedGalleries = updatedGalleries.filter((g) => g !== value);
+        // Remove the object if unchecked
+        updatedGalleries = updatedGalleries.filter((g) => g.name !== value);
       }
+
       setForm({
         ...form,
         galleries: updatedGalleries,
@@ -131,7 +148,7 @@ const handleImageUpload = (event) => {
                 type="checkbox"
                 name="galleries"
                 value={gallery.name}
-                checked={form.galleries.includes(gallery.name)}
+                checked={form.galleries.some((g) => g.name === gallery.name)}
                 onChange={handleChange}
               />
               {gallery.name}

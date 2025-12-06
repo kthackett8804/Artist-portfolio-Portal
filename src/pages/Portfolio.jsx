@@ -12,9 +12,10 @@ function Portfolio() {
   });
 
   const galleryOptions = [
-    "Modern Arts Gallery",
-    "Studio One Exhibition Hall",
-    "Open Canvas Collective",
+  {name: "Tech Art Gallery", location: "London" },
+  { name: "Digital Expressions", location: "New York" },
+  { name: "Modern Arts Hub", location: "Berlin" },
+
   ];
 
   const [imageFile, setImageFile] = useState(null);
@@ -125,15 +126,21 @@ const handleImageUpload = (event) => {
          <div>
           Galleries to submit portfolio to:
           {galleryOptions.map((gallery) => (
-            <label key={gallery}>
+            <label key={gallery.name}>
               <input
                 type="checkbox"
                 name="galleries"
-                value={gallery}
-                checked={form.galleries.includes(gallery)}
+                value={gallery.name}
+                checked={form.galleries.includes(gallery.name)}
                 onChange={handleChange}
               />
-              {gallery}
+              {gallery.name}
+
+              
+          <span aria-label={`Location of ${gallery.name}`}>
+        ({gallery.location})
+      </span>
+
             </label>
           ))}
         </div>

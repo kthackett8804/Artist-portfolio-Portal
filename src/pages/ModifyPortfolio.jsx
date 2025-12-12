@@ -1,14 +1,20 @@
 import { useState } from "react";
 
-function Portfolio() {
+function ModifyPortfolio() {
 
   const [form, setForm] = useState({
+    portfolioId: "",
     pieceName: "",
     artistName: "",
     artMedium: "",
     style: "",
     creationDate: "",
+    imageURL: "",
     GalleriesToSubmit: [],
+  });
+
+  const [apiID, setApiID] = useState({
+    id: "",
   });
 
   const galleryOptions = [
@@ -18,20 +24,8 @@ function Portfolio() {
 
   ];
 
-  const [imageFile, setImageFile] = useState(null);
-  const [previewURL, setPreviewURL] = useState(null);
-
  const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
-
-    //prev code didnt handle gallery as object
-    // if (name === "galleries") {
-    //   let updatedGalleries = [...form.galleries];
-    //   if (checked) {
-    //     updatedGalleries.push(value);
-    //   } else {
-    //     updatedGalleries = updatedGalleries.filter((g) => g !== value);
-    //   }
 
     if (name === "galleries") {
 
@@ -58,17 +52,12 @@ function Portfolio() {
         [name]: value,
       });
     }
+
+    setApiID({
+      ...apiID,
+      [name]: value,
+    });
   };
-
- 
-
-const handleImageUpload = (event) => {
-  const uploadedFile = event.target.files[0];
-
-  if (uploadedFile) {
-    setImageFile(uploadedFile);
-    setPreviewURL(URL.createObjectURL(uploadedFile));
-  }};
 
   const handleSubmit = async () => {
   const data = new FormData();
@@ -80,22 +69,34 @@ const handleImageUpload = (event) => {
   return (
     <div className="pagePadding">
 
-      <h2 className="submittedLabel">Your Portfolio!</h2>
+      <h2 className="submittedLabel">Modify your Portfolio!</h2>
 
-      
-          <div className="uploadSection">
-            {previewURL ? (<img className="uploadImages" src={previewURL} alt="Uploaded art preview" />) : ( <h2>Upload Your Artwork!</h2>)}
-
-            <br></br>
-            <input 
-              type="file" 
-              accept="image/*" 
-              onChange={handleImageUpload} 
-            />
+<div className="uploadSection">
+          
           </div>
-         
-
+      
         <div className="formSection">
+
+            <label>
+            ID: 
+            <input 
+              type="text" 
+              name="portfolioId" 
+              value={apiID.id} 
+              onChange={handleChange} 
+            />
+          </label>
+
+            <label>
+            Portfolio ID: 
+            <input 
+              type="text" 
+              name="portfolioId" 
+              value={form.portfolioId} 
+              onChange={handleChange} 
+            />
+          </label>
+
           <label>
             Piece name: 
             <input 
@@ -169,8 +170,18 @@ const handleImageUpload = (event) => {
           ))}
         </div>
 
+        <label>
+            Image URL: 
+            <input 
+              type="text" 
+              name="imageURL" 
+              value={form.imageURL} 
+              onChange={handleChange} 
+            />
+          </label>
+
           <div className="buttonRow">
-        <button className="mainDesignBtn" onClick={handleSubmit}>Upload</button>
+        <button className="mainDesignBtn" onClick={handleSubmit}>Modify</button>
       </div>
         </div>
 
@@ -178,4 +189,4 @@ const handleImageUpload = (event) => {
   );
 }
 
-export default Portfolio;
+export default ModifyPortfolio;

@@ -6,6 +6,8 @@ import Navbar from "./components/NavBar";
 import Home from "./pages/Home";
 import Portfolio from "./pages/Portfolio";
 import Submissions from "./pages/Submissions";
+import ModifyPortfolio from "./pages/ModifyPortfolio";
+import DeletePortfolio from "./pages/DeletePortfolio";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/modifyportfolio" element={<ModifyPortfolio />} />
+        <Route path="/deletePortfolio" element={<DeletePortfolio />} />
         <Route path="/submissions" element={<Submissions />} />
       </Routes>
     </div>

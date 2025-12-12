@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "prestart": "npm run build",
     "start": "node backend2/server.js",
     "dev": "npm-run-all --parallel frontend backend",
     "frontend": "vite",

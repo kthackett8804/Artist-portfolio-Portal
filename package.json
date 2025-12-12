@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "live-server": "^1.2.2",
+    "path": "^0.12.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",

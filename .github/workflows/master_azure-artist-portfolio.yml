@@ -33,6 +33,10 @@ jobs:
       # Verify frontend build exists
       - name: Verify frontend build
         run: |
+          echo "Listing contents of root:"
+          ls -la
+          echo "Listing contents of dist folder:"
+          ls -la dist
           if [ ! -d "dist" ]; then
             echo "Error: dist folder not found. Frontend build failed."
             exit 1
@@ -42,7 +46,9 @@ jobs:
 
       # Prepare backend (included as-is)
       - name: Prepare backend
-        run: echo "Backend folder is included as-is"
+        run: |
+          echo "Listing contents of backend2 folder:"
+          ls -la backend2
 
       # Upload artifacts for deployment (frontend + backend + package files)
       - name: Upload build artifacts
@@ -65,6 +71,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
+
+      # Debug: list files before deployment
+      - name: List files before deployment
+        run: |
+          echo "Listing all files in deploy folder:"
+          ls -la
 
       # Deploy to Azure Web App
       - name: Deploy to Azure Web App

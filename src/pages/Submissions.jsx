@@ -4,40 +4,56 @@ import { useState } from "react";
 function Submissions() {
 
   const Allsubmissions = [
-    { id: 1, title: "image 1", name: "name2" },
-    { id: 2, title: "image 2", name: "name" },
-    { id: 3, title: "image 3", name: "name" },
-    { id: 4, title: "image 4", name: "name" },
-    { id: 5, title: "image 5", name: "name" },
-    { id: 6, title: "image 6", name: "name" },
-    { id: 7, title: "image 7", name: "name" },
-    { id: 8, title: "image 8", name: "name" },
+    { id: 1, title: "image 1", name: "name2", url: "/uploads/image/img1.jpg" },
+    { id: 2, title: "image 2", name: "name",  url: "/uploads/image/img2.jpg" },
+    { id: 3, title: "image 3", name: "name",  url: "/uploads/image/img3.jpg" },
+    { id: 4, title: "image 4", name: "name",  url: "/uploads/image/img4.jpg" },
+    { id: 5, title: "image 5", name: "name",  url: "/uploads/image/img5.jpg" },
+    { id: 6, title: "image 6", name: "name",  url: "/uploads/resized-image/img6.jpg" },
+    { id: 7, title: "image 7", name: "name",  url: "/uploads/image/img7.jpg" },
+    { id: 8, title: "image 8", name: "name",  url: "/uploads/image/img8.jpg" },
   ];
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [showResized, setShowResized] = useState(false);
 
-  
-const filteredSubmissions = Allsubmissions.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  const filteredSubmissions = Allsubmissions.filter(item => {
+    if (showResized) {
+      return item.url.includes("/uploads/resized-image/");
+    } else {
+      return item.url.includes("/uploads/image/") && !item.url.includes("/uploads/resized-image/");
+    }
+  });
 
   return (
     <div>
-
       <h2 className="submittedLabel">Submissions</h2>
 
-      <h2>Search by name...</h2>
-      <input
-        type="text"
-        placeholder=""
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ padding: "8px", marginBottom: "16px", width: "100%" }}
-      />
+      {/* Toggle Buttons */}
+      <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+        <button
+          onClick={() => setShowResized(false)}
+          style={{
+            padding: "8px",
+            flex: 1,
+            background: !showResized ? "#ddd" : "#f8f8f8"
+          }}
+        >
+          Original
+        </button>
 
-      <PortfolioGrid items={filteredSubmissions}></PortfolioGrid>
-      
+        <button
+          onClick={() => setShowResized(true)}
+          style={{
+            padding: "8px",
+            flex: 1,
+            background: showResized ? "#ddd" : "#f8f8f8"
+          }}
+        >
+          Resized
+        </button>
+      </div>
+
+      <PortfolioGrid items={filteredSubmissions} />
     </div>
   );
 }

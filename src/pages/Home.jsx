@@ -37,8 +37,8 @@ function Home() {
         // Transform the data to match PortfolioGrid expected format
         const transformedData = data.map(item => ({
           id: item.id,
-          title: item.pieceName,
-          name: item.artistName,
+          title: "Title: " + item.pieceName,
+          name: "Artist: " + item.artistName,
           imageURL: buildBlobUrl(item.imageURL)
         }));
         

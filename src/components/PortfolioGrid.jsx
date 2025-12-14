@@ -1,15 +1,34 @@
 import { Link } from "react-router-dom";
 
-function PortfolioGrid( {items}) {
+function PortfolioGrid({ items }) {
  
   return (
     <section className="portfolio-section">
-
       <div className="gallery">
         {items.map((item) => (
           <div className="card" key={item.id}>
-            <div className="imgBox">{item.title}</div>
-            <p className="name">{item.name}</p>
+            <div className="imgBox">
+              {item.imageURL ? (
+                <img 
+                  src={item.imageURL} 
+                  alt={item.title} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                <div style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  backgroundColor: '#f0f0f0'
+                }}>
+                  No Image
+                </div>
+              )}
+            </div>
+            <p className="name">Title: {item.title}</p>
+            <p className="name">Artist: {item.name}</p>
           </div>
         ))}
       </div>

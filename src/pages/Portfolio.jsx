@@ -86,7 +86,8 @@ function Portfolio() {
       }
 
       const result = await response.json();
-      setMessage("Portfolio uploaded successfully!");
+      setMessage("Portfolio uploaded successfully with ID " + JSON.stringify(result.id) + "!");
+      console.log("Upload result:", JSON.stringify(result));
       
       // Reset form
       setForm({

@@ -93,7 +93,7 @@ function DeletePortfolio() {
         </div>
 
         <p style={{ fontSize: "0.9em", color: "#666", marginTop: "10px" }}>
-          ⚠️ Warning: This action is permanent and cannot be undone.
+          Warning: This action is permanent and cannot be undone.
         </p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function ModifyPortfolio() {
   const [form, setForm] = useState({
@@ -13,8 +13,10 @@ function ModifyPortfolio() {
   });
 
   const [apiID, setApiID] = useState("");
+  const [ids, setIds] = useState([]);
   const [updating, setUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingIds, setLoadingIds] = useState(false);
   const [message, setMessage] = useState("");
 
   const galleryOptions = [
@@ -22,6 +24,31 @@ function ModifyPortfolio() {
     { name: "Digital Expressions", location: "New York" },
     { name: "Modern Arts Hub", location: "Berlin" },
   ];
+
+  // Fetch all portfolio IDs on component mount
+  useEffect(() => {
+    fetchAllIds();
+  }, []);
+
+  const fetchAllIds = async () => {
+    try {
+      setLoadingIds(true);
+      const response = await fetch("/api/v1/portfolios");
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch portfolios: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const ids = Array.isArray(data) ? data.map(p => p.id).filter(Boolean) : [];
+      setIds(ids);
+    } catch (error) {
+      console.error("Error fetching portfolio IDs:", error);
+      setMessage(`Error loading IDs: ${error.message}`);
+    } finally {
+      setLoadingIds(false);
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value, checked } = event.target;
@@ -44,6 +71,10 @@ function ModifyPortfolio() {
       });
     } else if (name === "id") {
       setApiID(value);
+      // Auto-fetch when ID is selected from dropdown
+      if (value) {
+        handleFetchWithId(value);
+      }
     } else {
       setForm({
         ...form,
@@ -54,7 +85,15 @@ function ModifyPortfolio() {
 
   const handleFetch = async () => {
     if (!apiID.trim()) {
-      setMessage("Please enter an ID to fetch");
+      setMessage("Please select an ID to fetch");
+      return;
+    }
+    await handleFetchWithId(apiID);
+  };
+
+  const handleFetchWithId = async (id) => {
+    if (!id.trim()) {
+      setMessage("Please select an ID to fetch");
       return;
     }
 
@@ -62,7 +101,7 @@ function ModifyPortfolio() {
       setLoading(true);
       setMessage("");
 
-      const response = await fetch(`/api/v1/portfolios/${apiID.trim()}`);
+      const response = await fetch(`/api/v1/portfolios/${id.trim()}`);
 
       if (!response.ok) {
         throw new Error(`Failed to fetch portfolio: ${response.status}`);
@@ -151,13 +190,21 @@ function ModifyPortfolio() {
       <div className="formSection">
         <label>
           ID:
-          <input
-            type="text"
+          <select
             name="id"
             value={apiID}
             onChange={handleChange}
-            placeholder="Enter portfolio ID to fetch"
-          />
+            disabled={loadingIds}
+          >
+            <option value="">
+              {loadingIds ? "Loading IDs..." : "-- Select an ID --"}
+            </option>
+            {ids.map((id) => (
+              <option key={id} value={id}>
+                {id}
+              </option>
+            ))}
+          </select>
         </label>
 
         <div className="buttonRow">
@@ -166,7 +213,7 @@ function ModifyPortfolio() {
             onClick={handleFetch}
             disabled={loading}
           >
-            {loading ? "Loading..." : "Fetch Portfolio"}
+            {loading ? "Loading..." : "Portfolio Fetched!"}
           </button>
         </div>
 

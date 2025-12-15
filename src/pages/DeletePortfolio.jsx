@@ -1,35 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function DeletePortfolio() {
   const [apiID, setApiID] = useState("");
+  const [ids, setIds] = useState([]);
+  const [loadingIds, setLoadingIds] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [message, setMessage] = useState("");
 
+  // Fetch all portfolio IDs on mount
+  useEffect(() => {
+    fetchAllIds();
+  }, []);
+
+  const fetchAllIds = async () => {
+    try {
+      setLoadingIds(true);
+      const response = await fetch("/api/v1/portfolios");
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch portfolios: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const ids = Array.isArray(data)
+        ? data.map((p) => p.id).filter(Boolean)
+        : [];
+
+      setIds(ids);
+    } catch (error) {
+      console.error("Error fetching portfolio IDs:", error);
+      setMessage(`Error loading IDs: ${error.message}`);
+    } finally {
+      setLoadingIds(false);
+    }
+  };
+
   const handleChange = (event) => {
-    const { value } = event.target;
-    setApiID(value);
+    setApiID(event.target.value);
   };
 
   const handleSubmit = async () => {
     if (!apiID.trim()) {
-      setMessage("Please enter an ID to delete");
+      setMessage("Please select an ID to delete");
       return;
     }
 
-    // Confirm deletion
     const confirmed = window.confirm(
-      `Are you sure you want to delete portfolio with ID: ${apiID.trim()}? This action cannot be undone.`
+      `Are you sure you want to delete portfolio with ID: ${apiID}? This action cannot be undone.`
     );
 
-    if (!confirmed) {
-      return;
-    }
+    if (!confirmed) return;
 
     try {
       setDeleting(true);
       setMessage("");
 
-      const response = await fetch(`/api/v1/portfolios/${apiID.trim()}`, {
+      const response = await fetch(`/api/v1/portfolios/${apiID}`, {
         method: "DELETE",
       });
 
@@ -37,10 +63,11 @@ function DeletePortfolio() {
         throw new Error(`Delete failed: ${response.status}`);
       }
 
-      const result = await response.json();
+      await response.json();
       setMessage("Portfolio deleted successfully!");
-      
-      // Clear the ID field after successful deletion
+
+      // Remove deleted ID from dropdown
+      setIds((prev) => prev.filter((id) => id !== apiID));
       setApiID("");
     } catch (error) {
       console.error("Error deleting portfolio:", error);
@@ -57,13 +84,20 @@ function DeletePortfolio() {
       <div className="formSection">
         <label>
           ID:
-          <input
-            type="text"
-            name="portfolioId"
+          <select
             value={apiID}
             onChange={handleChange}
-            placeholder="Enter portfolio ID to delete"
-          />
+            disabled={loadingIds}
+          >
+            <option value="">
+              {loadingIds ? "Loading IDs..." : "-- Select an ID --"}
+            </option>
+            {ids.map((id) => (
+              <option key={id} value={id}>
+                {id}
+              </option>
+            ))}
+          </select>
         </label>
 
         {message && (

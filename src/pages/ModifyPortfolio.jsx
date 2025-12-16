@@ -18,6 +18,7 @@ function ModifyPortfolio() {
   const [loading, setLoading] = useState(false);
   const [loadingIds, setLoadingIds] = useState(false);
   const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState({});
 
   const galleryOptions = [
     { name: "Tech Art Gallery", location: "London" },
@@ -53,6 +54,11 @@ function ModifyPortfolio() {
   const handleChange = (event) => {
     const { name, value, checked } = event.target;
 
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
+
     if (name === "galleries") {
       let updatedGalleries = [...form.GalleriesToSubmit];
       const selectedGallery = galleryOptions.find((g) => g.name === value);
@@ -65,12 +71,21 @@ function ModifyPortfolio() {
         updatedGalleries = updatedGalleries.filter((g) => g.name !== value);
       }
 
+      // Clear galleries error when user makes selection
+      if (errors.GalleriesToSubmit) {
+        setErrors({ ...errors, GalleriesToSubmit: "" });
+      }
+
       setForm({
         ...form,
         GalleriesToSubmit: updatedGalleries,
       });
     } else if (name === "id") {
       setApiID(value);
+      // Clear ID error
+      if (errors.apiID) {
+        setErrors({ ...errors, apiID: "" });
+      }
       // Auto-fetch when ID is selected from dropdown
       if (value) {
         handleFetchWithId(value);
@@ -100,6 +115,7 @@ function ModifyPortfolio() {
     try {
       setLoading(true);
       setMessage("");
+      setErrors({});
 
       const response = await fetch(`/api/v1/portfolios/${id.trim()}`);
 
@@ -139,9 +155,85 @@ function ModifyPortfolio() {
     }
   };
 
-  const handleSubmit = async () => {
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Validate ID is selected
     if (!apiID.trim()) {
-      setMessage("Please enter an ID to update");
+      newErrors.apiID = "Please select an ID";
+    }
+
+    // Validate portfolio ID
+    if (!form.portfolioId.trim()) {
+      newErrors.portfolioId = "Portfolio ID is required";
+    }
+
+    // Validate piece name
+    if (!form.pieceName.trim()) {
+      newErrors.pieceName = "Piece name is required";
+    } else if (form.pieceName.length < 2) {
+      newErrors.pieceName = "Piece name must be at least 2 characters";
+    } else if (form.pieceName.length > 100) {
+      newErrors.pieceName = "Piece name must be less than 100 characters";
+    }
+
+    // Validate artist name
+    if (!form.artistName.trim()) {
+      newErrors.artistName = "Artist name is required";
+    } else if (form.artistName.length < 2) {
+      newErrors.artistName = "Artist name must be at least 2 characters";
+    } else if (form.artistName.length > 100) {
+      newErrors.artistName = "Artist name must be less than 100 characters";
+    }
+
+    // Validate art medium
+    if (!form.artMedium.trim()) {
+      newErrors.artMedium = "Art medium is required";
+    } else if (form.artMedium.length > 50) {
+      newErrors.artMedium = "Art medium must be less than 50 characters";
+    }
+
+    // Validate style
+    if (!form.style.trim()) {
+      newErrors.style = "Style is required";
+    } else if (form.style.length > 50) {
+      newErrors.style = "Style must be less than 50 characters";
+    }
+
+    // Validate creation date
+    if (!form.creationDate) {
+      newErrors.creationDate = "Creation date is required";
+    } else {
+      const selectedDate = new Date(form.creationDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const minDate = new Date("1800-01-01");
+
+      if (selectedDate < minDate) {
+        newErrors.creationDate = "Please enter a valid date";
+      } else if (selectedDate > today) {
+        newErrors.creationDate = "Creation date cannot be in the future";
+      }
+    }
+
+    // Validate galleries
+    if (form.GalleriesToSubmit.length === 0) {
+      newErrors.GalleriesToSubmit = "Please select at least one gallery";
+    }
+
+    // Validate image URL
+    if (!form.imageURL.trim()) {
+      newErrors.imageURL = "Image URL is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async () => {
+    // Validate form before submission
+    if (!validateForm()) {
+      setMessage("Please fix the errors before submitting");
       return;
     }
 
@@ -172,6 +264,7 @@ function ModifyPortfolio() {
 
       const result = await response.json();
       setMessage("Portfolio updated successfully!");
+      setErrors({});
     } catch (error) {
       console.error("Error updating portfolio:", error);
       setMessage(`Error: ${error.message}`);
@@ -205,6 +298,11 @@ function ModifyPortfolio() {
               </option>
             ))}
           </select>
+          {errors.apiID && (
+            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+              {errors.apiID}
+            </span>
+          )}
         </label>
 
         <div className="buttonRow">
@@ -225,6 +323,11 @@ function ModifyPortfolio() {
             value={form.portfolioId}
             onChange={handleChange}
           />
+          {errors.portfolioId && (
+            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+              {errors.portfolioId}
+            </span>
+          )}
         </label>
 
         <label>
@@ -235,6 +338,11 @@ function ModifyPortfolio() {
             value={form.pieceName}
             onChange={handleChange}
           />
+          {errors.pieceName && (
+            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+              {errors.pieceName}
+            </span>
+          )}
         </label>
 
         <label>
@@ -245,6 +353,11 @@ function ModifyPortfolio() {
             value={form.artistName}
             onChange={handleChange}
           />
+          {errors.artistName && (
+            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+              {errors.artistName}
+            </span>
+          )}
         </label>
 
         <label>
@@ -255,6 +368,11 @@ function ModifyPortfolio() {
             value={form.artMedium}
             onChange={handleChange}
           />
+          {errors.artMedium && (
+            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+              {errors.artMedium}
+            </span>
+          )}
         </label>
 
         <label>
@@ -265,6 +383,11 @@ function ModifyPortfolio() {
             value={form.style}
             onChange={handleChange}
           />
+          {errors.style && (
+            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+              {errors.style}
+            </span>
+          )}
         </label>
 
         <label>
@@ -275,6 +398,11 @@ function ModifyPortfolio() {
             value={form.creationDate}
             onChange={handleChange}
           />
+          {errors.creationDate && (
+            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+              {errors.creationDate}
+            </span>
+          )}
         </label>
 
         <div>
@@ -296,6 +424,11 @@ function ModifyPortfolio() {
               </span>
             </label>
           ))}
+          {errors.GalleriesToSubmit && (
+            <div style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
+              {errors.GalleriesToSubmit}
+            </div>
+          )}
         </div>
 
         <label>
@@ -307,6 +440,11 @@ function ModifyPortfolio() {
             onChange={handleChange}
             readOnly
           />
+          {errors.imageURL && (
+            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+              {errors.imageURL}
+            </span>
+          )}
         </label>
 
         {message && (

@@ -81,11 +81,14 @@ function Submissions() {
       const data = await response.json();
       
       // Transform the data to match PortfolioGrid expected format
+      //do something with blob data
       const transformedData = data.map(item => {
         // Handle different structures for original vs resized
+        console.log("Item being processed:", item);
+
         const id = showResized ? item.Id : item.id;
-        const title = showResized ? "Resized Image" : "Title: " + item.pieceName;
-        const name = showResized ?  " ": "Artist: " + item.artistName;
+        const title = showResized ? "Resized Image" : item.pieceName;
+        const name = showResized ? item.DisplayName : item.artistName;
         const imagePath = showResized ? item.Path : item.imageURL;
         
         return {

@@ -198,3 +198,15 @@ body {
   margin-top: 30px;
 }
 
+.id {
+  margin: 8px 0;
+  /* Break long words and wrap text */
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  /* Prevent horizontal overflow */
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 1.4;
+}
+

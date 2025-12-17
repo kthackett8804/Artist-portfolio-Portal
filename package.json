@@ -13,6 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@microsoft/applicationinsights-web": "^3.3.10",
     "axios": "^1.13.2",
     "express": "^5.2.1",
     "fetch": "^1.1.0",

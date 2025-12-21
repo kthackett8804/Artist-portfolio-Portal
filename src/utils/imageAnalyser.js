@@ -11,7 +11,8 @@ const client = createClient(endpoint, credential);
 const features = [
   'Caption',
   'Read',
-  'Tags'
+  'Tags',
+  'People'
 ];
 
 async function analyzeImageFromUrl(imageUrl) {
@@ -31,7 +32,9 @@ async function analyzeImageFromUrl(imageUrl) {
     const analysisResults = {
       caption: null,
       tags: [],
-      text: []
+      text: [],
+      peopleCount: 0,
+      people: []
     };
 
     if (iaResult.captionResult) {
@@ -55,6 +58,14 @@ async function analyzeImageFromUrl(imageUrl) {
         });
       });
     }
+
+    if (iaResult.peopleResult?.values) {
+  analysisResults.people = iaResult.peopleResult.values.map(person => ({
+    confidence: person.confidence
+  }));
+
+  analysisResults.peopleCount = analysisResults.people.length;
+}
 
     return analysisResults;
   } catch (error) {

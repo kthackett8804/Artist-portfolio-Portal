@@ -29,7 +29,10 @@ jobs:
       # Build frontend
       - name: Build frontend
         run: npm run build
-
+        env:
+          VITE_VISION_ENDPOINT: ${{ secrets.VITE_VISION_ENDPOINT }}
+          VITE_VISION_KEY: ${{ secrets.VITE_VISION_KEY }}
+          
       # Verify frontend build exists
       - name: Verify frontend build
         run: |

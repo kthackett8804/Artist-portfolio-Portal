@@ -131,7 +131,7 @@ export default function ImageAnalyzerPage() {
 
   return (
     <div className="pagePadding">
-      <h2 className="submittedLabel">Azure Image Analyzer</h2>
+      <h2 className="submittedLabel">Art Analyser</h2>
 
       <div className="uploadSection">
       </div>
@@ -186,7 +186,7 @@ export default function ImageAnalyzerPage() {
                 onClick={handleAnalyze}
                 disabled={analyzing}
               >
-                {analyzing ? 'Analyzing...' : 'Analyze Image'}
+                {analyzing ? 'Analysing...' : 'Analyse Artwork'}
               </button>
             </div>
           </>

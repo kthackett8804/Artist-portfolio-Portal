@@ -32,7 +32,11 @@ jobs:
         env:
           VITE_VISION_ENDPOINT: ${{ secrets.VITE_VISION_ENDPOINT }}
           VITE_VISION_KEY: ${{ secrets.VITE_VISION_KEY }}
-          
+
+      - name: Verify Vite env injection
+        run: |
+          grep -R "cognitiveservices" dist || echo "Endpoint not found in build output"
+
       # Verify frontend build exists
       - name: Verify frontend build
         run: |

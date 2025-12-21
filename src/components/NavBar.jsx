@@ -8,6 +8,7 @@ function Navbar() {
       <Link to="/modifyportfolio"><button>Modify Portfolio</button></Link>
       <Link to="/deletePortfolio"><button>Delete Portfolio</button></Link>
       <Link to="/submissions"><button>View all Submissions</button></Link>
+      <Link to="/imageanalyser"><button>Image Analyser</button></Link>
     </nav>
   );
 }

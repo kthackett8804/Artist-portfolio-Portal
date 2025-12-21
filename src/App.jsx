@@ -8,6 +8,7 @@ import Portfolio from "./pages/Portfolio";
 import Submissions from "./pages/Submissions";
 import ModifyPortfolio from "./pages/ModifyPortfolio";
 import DeletePortfolio from "./pages/DeletePortfolio";
+import ImageAnalyser from "./pages/ImageAnalyser";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/modifyportfolio" element={<ModifyPortfolio />} />
         <Route path="/deletePortfolio" element={<DeletePortfolio />} />
         <Route path="/submissions" element={<Submissions />} />
+        <Route path="/imageanalyser" element={<ImageAnalyser />} />
       </Routes>
     </div>
   );

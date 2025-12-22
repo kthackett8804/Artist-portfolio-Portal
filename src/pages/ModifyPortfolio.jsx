@@ -127,6 +127,7 @@ function ModifyPortfolio() {
       
       // Parse GalleriesToSubmit if it's a string
       let galleries = data.GalleriesToSubmit;
+      console.log("Fetched galleries:", galleries);
       if (typeof galleries === "string") {
         try {
           galleries = JSON.parse(galleries);
@@ -299,7 +300,7 @@ function ModifyPortfolio() {
             ))}
           </select>
           {errors.apiID && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.apiID}
             </span>
           )}
@@ -324,7 +325,7 @@ function ModifyPortfolio() {
             onChange={handleChange}
           />
           {errors.portfolioId && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.portfolioId}
             </span>
           )}
@@ -339,7 +340,7 @@ function ModifyPortfolio() {
             onChange={handleChange}
           />
           {errors.pieceName && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.pieceName}
             </span>
           )}
@@ -354,7 +355,7 @@ function ModifyPortfolio() {
             onChange={handleChange}
           />
           {errors.artistName && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.artistName}
             </span>
           )}
@@ -369,7 +370,7 @@ function ModifyPortfolio() {
             onChange={handleChange}
           />
           {errors.artMedium && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.artMedium}
             </span>
           )}
@@ -384,7 +385,7 @@ function ModifyPortfolio() {
             onChange={handleChange}
           />
           {errors.style && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.style}
             </span>
           )}
@@ -399,7 +400,7 @@ function ModifyPortfolio() {
             onChange={handleChange}
           />
           {errors.creationDate && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.creationDate}
             </span>
           )}
@@ -408,7 +409,7 @@ function ModifyPortfolio() {
         <div>
           Galleries to submit portfolio to:
           {galleryOptions.map((gallery) => (
-            <label key={gallery.name}>
+            <label key={gallery.name} className="galleryCheckboxLabel">
               <input
                 type="checkbox"
                 name="galleries"
@@ -425,7 +426,7 @@ function ModifyPortfolio() {
             </label>
           ))}
           {errors.GalleriesToSubmit && (
-            <div style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
+            <div className="errorText">
               {errors.GalleriesToSubmit}
             </div>
           )}
@@ -441,20 +442,14 @@ function ModifyPortfolio() {
             readOnly
           />
           {errors.imageURL && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.imageURL}
             </span>
           )}
         </label>
 
         {message && (
-          <div
-            style={{
-              margin: "10px 0",
-              padding: "10px",
-              backgroundColor: message.includes("Error") ? "#fee" : "#efe",
-            }}
-          >
+          <div className={`messageBox ${message.includes("Error") ? "messageError" : "messageSuccess"}`}>
             {message}
           </div>
         )}

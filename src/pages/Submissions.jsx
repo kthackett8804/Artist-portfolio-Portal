@@ -47,8 +47,8 @@ function Submissions() {
       // Transform single item
       const transformedData = [{
         id: data.id,
-        title: "Title: " + data.pieceName,
-        name: "Artist: " + data.artistName,
+        title: data.pieceName,
+        name: data.artistName,
         imageURL: buildBlobUrl(data.imageURL, false)
       }];
       
@@ -67,7 +67,6 @@ function Submissions() {
       setLoading(true);
       setError(null);
       
-      // Fetch based on current view (original or resized)
       const endpoint = showResized 
         ? "/api/v1/portfolios/resized" 
         : "/api/v1/portfolios";
@@ -80,11 +79,7 @@ function Submissions() {
       
       const data = await response.json();
       
-      // Transform the data to match PortfolioGrid expected format
-      //do something with blob data
       const transformedData = data.map(item => {
-        // Handle different structures for original vs resized
-        console.log("Item being processed:", item);
 
         const id = showResized ? item.Id : item.id;
         const title = showResized ? "Resized Image" : item.pieceName;
@@ -130,7 +125,7 @@ function Submissions() {
 
   if (loading) {
     return (
-      <div>
+      <div className="loadingMessage">
         <h2 className="submittedLabel">Loading submissions...</h2>
       </div>
     );
@@ -138,10 +133,10 @@ function Submissions() {
 
   if (error) {
     return (
-      <div>
+      <div className="errorMessage">
         <h2 className="submittedLabel">Error loading submissions</h2>
         <p>Error: {error}</p>
-        <button onClick={handleBackToAll} style={{ padding: "8px 16px", marginTop: "8px" }}>
+        <button onClick={handleBackToAll} className="errorButton">
           Back to All Submissions
         </button>
       </div>
@@ -152,64 +147,36 @@ function Submissions() {
     <div>
       <h2 className="submittedLabel">Submissions</h2>
 
-      {/* Search by ID Form */}
-      <form onSubmit={handleSearchSubmit} style={{ marginBottom: "16px", display: "flex", gap: "8px" }}>
+      <form onSubmit={handleSearchSubmit} className="searchForm">
         <input
           type="text"
           value={searchId}
           onChange={(e) => setSearchId(e.target.value)}
           placeholder="Enter Original submission ID"
-          style={{
-            flex: 1,
-            padding: "8px",
-            border: "1px solid #ccc",
-            borderRadius: "4px"
-          }}
+          className="searchInput"
         />
-        <button
-          type="submit"
-          style={{
-            padding: "8px 16px",
-            background: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer"
-          }}
-        >
+        <button type="submit" className="searchButton">
           Search
         </button>
         {showIndividual && (
           <button
             type="button"
             onClick={handleBackToAll}
-            style={{
-              padding: "8px 16px",
-              background: "#6c757d",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer"
-            }}
+            className="showAllButton"
           >
             Show All
           </button>
         )}
       </form>
 
-      {/* Toggle Buttons - Only show when viewing all */}
       {!showIndividual && (
-        <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+        <div className="toggleButtonsRow">
           <button
             onClick={() => {
               console.log("Original button clicked");
               setShowResized(false);
             }}
-            style={{
-              padding: "8px",
-              flex: 1,
-              background: !showResized ? "#ddd" : "#f8f8f8"
-            }}
+            className="toggleButton"
           >
             Original
           </button>
@@ -219,11 +186,7 @@ function Submissions() {
               console.log("Resized button clicked");
               setShowResized(true);
             }}
-            style={{
-              padding: "8px",
-              flex: 1,
-              background: showResized ? "#ddd" : "#f8f8f8"
-            }}
+            className="toggleButton"
           >
             Resized
           </button>
@@ -231,7 +194,7 @@ function Submissions() {
       )}
 
       {showIndividual && (
-        <p style={{ marginBottom: "16px", fontStyle: "italic" }}>
+        <p className="individualNote">
         </p>
       )}
 

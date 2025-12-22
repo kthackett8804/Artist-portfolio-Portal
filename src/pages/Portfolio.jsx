@@ -217,7 +217,7 @@ function Portfolio() {
         <br />
         <input type="file" accept="image/*" onChange={handleImageUpload} />
         {errors.imageFile && (
-          <div style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
+          <div className="errorText">
             {errors.imageFile}
           </div>
         )}
@@ -233,7 +233,7 @@ function Portfolio() {
             onChange={handleChange}
           />
           {errors.pieceName && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.pieceName}
             </span>
           )}
@@ -248,7 +248,7 @@ function Portfolio() {
             onChange={handleChange}
           />
           {errors.artistName && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.artistName}
             </span>
           )}
@@ -263,7 +263,7 @@ function Portfolio() {
             onChange={handleChange}
           />
           {errors.artMedium && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.artMedium}
             </span>
           )}
@@ -278,7 +278,7 @@ function Portfolio() {
             onChange={handleChange}
           />
           {errors.style && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.style}
             </span>
           )}
@@ -293,7 +293,7 @@ function Portfolio() {
             onChange={handleChange}
           />
           {errors.creationDate && (
-            <span style={{ color: "red", fontSize: "14px", display: "block", marginTop: "5px" }}>
+            <span className="errorTextBlock">
               {errors.creationDate}
             </span>
           )}
@@ -302,7 +302,7 @@ function Portfolio() {
         <div>
           Galleries to submit portfolio to:
           {galleryOptions.map((gallery) => (
-            <label key={gallery.name}>
+            <label key={gallery.name} className="galleryCheckboxLabel">
               <input
                 type="checkbox"
                 name="galleries"
@@ -317,14 +317,14 @@ function Portfolio() {
             </label>
           ))}
           {errors.GalleriesToSubmit && (
-            <div style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
+            <div className="errorText">
               {errors.GalleriesToSubmit}
             </div>
           )}
         </div>
 
         {message && (
-          <div style={{ margin: "10px 0", padding: "10px", backgroundColor: message.includes("Error") ? "#fee" : "#efe" }}>
+          <div className={`messageBox ${message.includes("Error") ? "messageError" : "messageSuccess"}`}>
             {message}
           </div>
         )}

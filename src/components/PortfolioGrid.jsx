@@ -28,7 +28,7 @@ function PortfolioGrid({ items }) {
               )}
             </div>
             <p className="name">Title: {item.title}</p>
-            <p className="name">Name: {item.name}</p>
+            <p className="name">Artist/Name: {item.name}</p>
             <p className="id">ID: {item.id}</p>
           </div>
         ))}

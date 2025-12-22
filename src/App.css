@@ -5,7 +5,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-
 .container {
   width: 100%;
   padding: 20px;
@@ -18,7 +17,6 @@ body {
   background: #e0d6ff;
 }
 
-
 .logo {
   width: 80px;
   height: 80px;
@@ -30,13 +28,11 @@ body {
   margin: 0;
 }
 
-
 .logo img {
   width: 100%;
   height: 100%;
   object-fit: cover; 
 }
-
 
 .nav {
   display: flex;
@@ -80,7 +76,6 @@ body {
   text-align: center;
 }
 
-
 .imgBox {
   height: 150px;
   background: white;
@@ -89,7 +84,6 @@ body {
   align-items: center;
   justify-content: center;
 }
-
 
 .name {
   font-weight: bold;
@@ -108,18 +102,21 @@ body {
   font-size: 16px;
 }
 
-.footer h3{
+.mainDesignBtn:hover {
+  background: #581cd1;
+}
+
+.footer h3 {
   border: 2px solid #aaa;
   margin-top: 30px;
   padding: 20px;
   background: #cb9ef8;
 } 
 
-.header h1{
+.header h1 {
   margin: 0;  
   line-height: 80px;
 }
-
 
 /* Container to hold upload and form side by side */
 .pagePadding {
@@ -174,23 +171,6 @@ body {
   font-size: 14px;
 }
 
-.mainDesignBtn {
-  width: 180px;
-  align-self: center;
-  margin-top: 25px;
-  background: #6a30ff;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.mainDesignBtn:hover {
-  background: #581cd1;
-}
-
 .buttonRow {
   display: flex;
   justify-content: center;
@@ -210,3 +190,191 @@ body {
   line-height: 1.4;
 }
 
+/* Submissions Page Styles */
+.loadingMessage {
+  text-align: center;
+  padding: 20px;
+}
+
+.errorMessage {
+  text-align: center;
+  padding: 20px;
+}
+
+.errorButton {
+  padding: 8px 16px;
+  margin-top: 8px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.errorButton:hover {
+  background: #5a6268;
+}
+
+.searchForm {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.searchButton {
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.searchButton:hover {
+  background: #0056b3;
+}
+
+.showAllButton {
+  padding: 8px 16px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.showAllButton:hover {
+  background: #5a6268;
+}
+
+.toggleButtonsRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.toggleButton {
+  padding: 8px;
+  flex: 1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.toggleButtonActive {
+  background: #ddd;
+}
+
+.toggleButtonInactive {
+  background: #f8f8f8;
+}
+
+.toggleButton:hover {
+  background: #e0e0e0;
+}
+
+.individualNote {
+  margin-bottom: 16px;
+  font-style: italic;
+  color: #666;
+}
+
+/* Portfolio Page Styles */
+.errorText {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.errorTextBlock {
+  color: red;
+  font-size: 14px;
+  display: block;
+  margin-top: 5px;
+}
+
+.messageBox {
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.messageSuccess {
+  background-color: #efe;
+}
+
+.messageError {
+  background-color: #fee;
+}
+
+.mainDesignBtn:disabled {
+  background: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.galleryCheckboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.galleryCheckboxLabel input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.homePage {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px 40px;
+  text-align: center;
+}
+
+/* Reduce vertical spacing */
+.homePage h3.submittedLabel {
+  margin-bottom: 25px;
+}
+
+/* Space between grid and button */
+.homePage .mainDesignBtn {
+  margin-top: 30px;
+}
+
+/* Loading & error states */
+.homePageLoading,
+.homePageError {
+  text-align: center;
+  padding: 40px;
+}
+
+.homePageError p {
+  margin-top: 10px;
+  color: red;
+}
+
+.deleteBtn {
+  background: #dc3545; /* red */
+}
+
+.deleteBtn:hover {
+  background: #b52a37;
+}
+
+.deleteBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

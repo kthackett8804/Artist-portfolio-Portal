@@ -7,7 +7,6 @@ function DeletePortfolio() {
   const [deleting, setDeleting] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Fetch all portfolio IDs on mount
   useEffect(() => {
     fetchAllIds();
   }, []);
@@ -16,40 +15,26 @@ function DeletePortfolio() {
     try {
       setLoadingIds(true);
       const response = await fetch("/api/v1/portfolios");
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch portfolios: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`Failed to fetch portfolios`);
 
       const data = await response.json();
-      const ids = Array.isArray(data)
-        ? data.map((p) => p.id).filter(Boolean)
-        : [];
-
-      setIds(ids);
+      setIds(data.map(p => p.id).filter(Boolean));
     } catch (error) {
-      console.error("Error fetching portfolio IDs:", error);
       setMessage(`Error loading IDs: ${error.message}`);
     } finally {
       setLoadingIds(false);
     }
   };
 
-  const handleChange = (event) => {
-    setApiID(event.target.value);
-  };
-
   const handleSubmit = async () => {
-    if (!apiID.trim()) {
+    if (!apiID) {
       setMessage("Please select an ID to delete");
       return;
     }
 
-    const confirmed = window.confirm(
-      `Are you sure you want to delete portfolio with ID: ${apiID}? This action cannot be undone.`
-    );
-
-    if (!confirmed) return;
+    if (!window.confirm(`Delete portfolio ${apiID}? This cannot be undone.`)) {
+      return;
+    }
 
     try {
       setDeleting(true);
@@ -59,18 +44,12 @@ function DeletePortfolio() {
         method: "DELETE",
       });
 
-      if (!response.ok) {
-        throw new Error(`Delete failed: ${response.status}`);
-      }
+      if (!response.ok) throw new Error("Delete failed");
 
-      await response.json();
       setMessage("Portfolio deleted successfully!");
-
-      // Remove deleted ID from dropdown
-      setIds((prev) => prev.filter((id) => id !== apiID));
+      setIds(prev => prev.filter(id => id !== apiID));
       setApiID("");
     } catch (error) {
-      console.error("Error deleting portfolio:", error);
       setMessage(`Error: ${error.message}`);
     } finally {
       setDeleting(false);
@@ -86,27 +65,23 @@ function DeletePortfolio() {
           ID:
           <select
             value={apiID}
-            onChange={handleChange}
+            onChange={e => setApiID(e.target.value)}
             disabled={loadingIds}
           >
             <option value="">
               {loadingIds ? "Loading IDs..." : "-- Select an ID --"}
             </option>
-            {ids.map((id) => (
-              <option key={id} value={id}>
-                {id}
-              </option>
+            {ids.map(id => (
+              <option key={id} value={id}>{id}</option>
             ))}
           </select>
         </label>
 
         {message && (
           <div
-            style={{
-              margin: "10px 0",
-              padding: "10px",
-              backgroundColor: message.includes("Error") ? "#fee" : "#efe",
-            }}
+            className={`messageBox ${
+              message.startsWith("Error") ? "messageError" : "messageSuccess"
+            }`}
           >
             {message}
           </div>
@@ -114,21 +89,13 @@ function DeletePortfolio() {
 
         <div className="buttonRow">
           <button
-            className="mainDesignBtn"
+            className="mainDesignBtn deleteBtn"
             onClick={handleSubmit}
             disabled={deleting}
-            style={{
-              backgroundColor: deleting ? "#ccc" : "#dc3545",
-              cursor: deleting ? "not-allowed" : "pointer",
-            }}
           >
             {deleting ? "Deleting..." : "Delete"}
           </button>
         </div>
-
-        <p style={{ fontSize: "0.9em", color: "#666", marginTop: "10px" }}>
-          Warning: This action is permanent and cannot be undone.
-        </p>
       </div>
     </div>
   );
